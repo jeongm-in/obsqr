@@ -1,0 +1,37 @@
+name: Android CI
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: gradle
+        
+    - name: Restore playstore.keystore.jks
+      run: echo $RELEASE_STORE_FILE | base64 -d > ./keystore.jks
+    - name: Build Release AAB
+      run: ./gradlew
+        -PKEYSTORE_FILE="../${{ ./keystore.jks }}"
+        -PRELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}
+        -PRELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}
+        -PRELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}
+        app:bundleRelease
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Build with Gradle
+      run: ./gradlew build
+
+
