@@ -29,7 +29,7 @@ public class QrContentTest {
 
         assertEquals("trikita.obsqr", appContext.getPackageName());
     }
-
+    @Test
     public void testBrokenRegexp() {
         String s = "http://qrs.ly/z24icxy";
         assertFalse(s.matches(QrContent.GooglePlayContent.MATCH));

@@ -25,6 +25,7 @@ public class ZBarDecoderTest {
         assertEquals("trikita.obsqr", appContext.getPackageName());
     }
 
+    @Test
     public void testBitmaps() {
         Map<Integer, String> qrs = new HashMap<Integer, String>() {{
             put(R.drawable.qr1, "http://www.qrstuff.com/");
